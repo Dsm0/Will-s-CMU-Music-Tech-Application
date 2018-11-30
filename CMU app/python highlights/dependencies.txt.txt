@@ -1,0 +1,7 @@
+argparse
+queue
+sys
+matplotlib
+numpy
+sounddevice
+FoxDot
