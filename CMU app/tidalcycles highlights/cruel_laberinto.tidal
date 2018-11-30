@@ -1,0 +1,74 @@
+d1 $ every 4 (linger "0.08*<1 2>") $ sound "[ab*4" # n "<11>]/2" # gain 0.9 -- # delay 0.7 |*| speed "<[1 2]*2>"
+
+d1 $ s "bd"
+
+
+p1 $ word "ffffff" # life 100 # str 100 # distance 200 # speed 0.000001
+
+$ sound "breath(1,8)" # gain 2 # speed 1
+
+phush
+
+    poetrySlang = OscSlang {path = "/note",
+                            timestamp = NoStamp,
+                            namedParams = False,
+                            preamble = []
+                           }
+
+p1 <- poetryStream
+p2 <- poetryStream
+p3 <- poetryStream
+p4 <- poetryStream
+p5 <- poetryStream
+p6 <- poetryStream
+
+hushp
+
+
+
+p1 $ slow 8 $ jux (striate 20) $ word "module*5 + 1" # x (slow 10 $ scale 0.25 0.75 $ sine) # y (slow 10 $ scale 0.25 0.75 $ tri) # r (slow 4 $ scale 0 255 $ sine) # b (slow 8 $ scale 0 255 $ sine) # g (slow 16 $ scale 0 100 $ sine) # distance (slow 10 $ scale 20 50 $ tri) # rotation "1"
+# life 50
+
+
+d1 $ every 8 (|*| speed 0.25) $ every 4 (linger "0.5*<1 2>") $ sound "fire*2" # n "11" # gain 1 |*| speed "<1>"
+
+hush
+
+
+    poetryStream = do
+      s <- makeConnection "127.0.0.1" 8010 poetrySlang
+      stream (Backend s $ (\_ _ _ -> return ())) poetry
+    word         = makeS poetry "word"
+    r            = makeF poetry "r"
+    g            = makeF poetry "g"
+    b            = makeF poetry "b"
+    rotation     = makeF poetry "rotation"
+    distance     = makeF poetry "distance"
+    life         = makeI poetry "life"
+    x            = makeF poetry "x"
+    y            = makeF poetry "y"
+    str          = makeI poetry "str"
+
+p1 silence
+p2 silence
+
+hushp
+
+let hushp = mapM_ ($ silence) [p1, p2, p3]
+hushp
+
+let solop = (>>) hush
+
+p3 $ word "h e l l o w o r l d" # x "0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" # life "12" # r "0.0" # g (slow 2 $ scale 0 255 sine)
+# b "155"
+# x "0.5,0.9"
+# distance "20"
+
+p1 $ word "s p a" # str 2
+   # x "0.4 0.5 0.6"
+   # life "20"
+   # r "2"
+   # g (slow 2 $ scale 0 255 sine)
+   # b "155"
+
+hush
